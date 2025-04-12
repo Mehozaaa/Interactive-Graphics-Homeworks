@@ -1,4 +1,4 @@
-//Please refer to the README for the code breakdown
+//Please refer to the README file for the code breakdown
 
 function composite(bgImg, fgImg, fgOpac, fgPos) {
 
