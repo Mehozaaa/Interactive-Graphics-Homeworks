@@ -1,3 +1,5 @@
+//Please refer to the README for the code breakdown
+
 function composite(bgImg, fgImg, fgOpac, fgPos) {
 
     var bgData = bgImg.data, fgData = fgImg.data;
