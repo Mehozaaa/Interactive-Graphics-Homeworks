@@ -2,6 +2,7 @@
 This repository contains Interactive Graphics Homeworks.
 
 Homework 1 solution break-down: 
+
 We saw in the lecture that raster images are stored in one-dimensional array even though they represent a two-dimensional grid. This is why the first step of the code was to extract data arrays and dimensions of background and foreground images.
 In the second step, I used a loop to iterate over foreground pixels (located by x,y coordinates) then added the fgpos to find the corresponding location on the background, and if the coordinate falls outside the background then the pixel is skipped.
 In the third step I used the formula (y * width + x) * 4 to calculate the index for any of the pixels.
