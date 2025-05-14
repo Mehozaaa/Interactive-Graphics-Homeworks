@@ -38,7 +38,9 @@ Inside the function, there 2 outer loops that go through rows and colums to pich
 ***Homework 3 solution break-down: 
 
 PS: PLEASE WHEN YOU ADD A TEXTURE CHECK AND UNCHECK THE BOX TO APPLY IT TO THE OBJECT FOR BOTH HWK 3 and 4
+
 In GetModelViewProjection function
+
 I first compute cosX, sinX, cosY, and sinY from the input angles rotationX and rotationY so that we can build the rotation matrices as shown in lecture.
 
 Then I construct the X-axis rotation matrix and the Y-axis rotation matrix in column-major order, each modifying the identity by inserting the appropriate cosine and sine values into a 2×2 block.
