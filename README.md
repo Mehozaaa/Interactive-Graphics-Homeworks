@@ -34,3 +34,36 @@ After that, follwing the same pattern as before, I applied the translation on th
 In the second part of the code, there is the ApplyTransform function that takes 2 matrices, each of them does onne transform and outputs a new 3x3 matrix (in column‑major order) that combines both transforms.
 
 Inside the function, there 2 outer loops that go through rows and colums to pich which cell is being filled and an inner loop takes that row’s three numbers and that column’s three numbers, multiplies them, adds them up, and that sum is the number that is assigned to that cell. Note that when you use the resulting matrix on any point, it first does trans1 to that point, and then feeds the outcome into trans2.
+
+***Homework 3 solution break-down: 
+PS: PLEASE WHEN YOU ADD A TEXTURE CHECK AND UNCHECK THE BOX TO APPLY IT TO THE OBJECT FOR BOTH HWK 3 and 4
+In GetModelViewProjection function
+I first compute cosX, sinX, cosY, and sinY from the input angles rotationX and rotationY so that we can build the rotation matrices as shown in lecture.
+
+Then I construct the X-axis rotation matrix and the Y-axis rotation matrix in column-major order, each modifying the identity by inserting the appropriate cosine and sine values into a 2×2 block.
+
+After that I create a translation matrix by taking the 4×4 identity and placing translationX, translationY, and translationZ in its bottom row to shift the model in space.
+
+Then using MatrixMult function I combine transforms and finally I multiply the given projectionMatrix by this model matrix and return the resulting MVP matrix in column-major order.
+
+For the MeshDrawer
+I first start by writinh and compiloinh the vertex shader and the fragment shader, which chooses between sampling a texture or coloring by depth.
+
+Then I create two GPU buffers for vertex positions and UVs and allocate a texture object. By initializing flags swapFlag = false and isTextureShown = false, bind the sampler uniform to texture unit 0, and call gl.useProgram(this.prog) to set up defaults.
+
+When setMesh(vertPos, texCoords) is called, I bind each buffer in turn, upload the data as Float32Array, and set numVertices = vertPos.length / 3 so the draw call knows how many vertices to render.
+
+Then using swapYZ(swap) I update this.swapFlag and immediately upload it (as 0 or 1) to the swapYZ uniform, exactly as we learned for conditional shader behavior.
+
+In the draw(mvpMatrix) method, I re-bind the program, bind the position and UV buffers, enable and point the attributes, upload mvpMatrix, swapFlag, and isTextureShown to their uniforms, bind the texture to unit 0 if needed, and then call gl.drawArrays(gl.TRIANGLES, 0, this.numVertices) to render the mesh.
+
+And the setTexture(img) is used to bind the texture object, flip the image vertically, upload it with texImage2D, generate mipmaps, set linear filtering for minification/magnification, and set wrapping to repeat on both axes.
+
+Finally, showTexture(show) is used to update this.isTextureShown and upload it to the showTexture uniform so the fragment shader either samples the texture or falls back to the depth-based color, just like we’ve seen lecture demos.
+
+***Homework 4 solution break-down: 
+
+In addition to everything from Project 3, in project 4 two new methods for Blinn–Phong control were added:
+setLightDir(x, y, z)that is used to normalize  the given (x,y,z) vector and uploads it to the lightDir uniform so the shader’s diffuse and specular terms use the correct light direction.
+
+and setShininess(shininess) that is used to upload the chosen shininess exponent to the shininess uniform so the fragment shader computes spec = pow(max(dot(N,H),0), shininess) with the desired level of shininess.
