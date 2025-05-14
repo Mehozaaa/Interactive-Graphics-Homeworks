@@ -36,6 +36,7 @@ In the second part of the code, there is the ApplyTransform function that takes 
 Inside the function, there 2 outer loops that go through rows and colums to pich which cell is being filled and an inner loop takes that row’s three numbers and that column’s three numbers, multiplies them, adds them up, and that sum is the number that is assigned to that cell. Note that when you use the resulting matrix on any point, it first does trans1 to that point, and then feeds the outcome into trans2.
 
 ***Homework 3 solution break-down: 
+
 PS: PLEASE WHEN YOU ADD A TEXTURE CHECK AND UNCHECK THE BOX TO APPLY IT TO THE OBJECT FOR BOTH HWK 3 and 4
 In GetModelViewProjection function
 I first compute cosX, sinX, cosY, and sinY from the input angles rotationX and rotationY so that we can build the rotation matrices as shown in lecture.
