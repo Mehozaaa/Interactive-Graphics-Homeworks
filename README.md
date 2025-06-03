@@ -70,3 +70,17 @@ In addition to everything from Project 3, in project 4 two new methods for Blinn
 setLightDir(x, y, z)that is used to normalize  the given (x,y,z) vector and uploads it to the lightDir uniform so the shader’s diffuse and specular terms use the correct light direction.
 
 and setShininess(shininess) that is used to upload the chosen shininess exponent to the shininess uniform so the fragment shader computes spec = pow(max(dot(N,H),0), shininess) with the desired level of shininess.
+
+***Homework 5 solution break-down: 
+
+In the first step, I defined GLSL structs—Ray, Material, Sphere, Light, and HitInfo—to organize ray origin/direction, surface properties (diffuse, specular, shininess), sphere geometry, point lights, and intersection results (distance, position, normal, material). These structs set up all data needed for intersection tests and shading.
+
+In the second step, I declared uniforms for the shader to access every sphere, every light, the cube‐map environment, and a bounce limit, and I defined a small epsilon to offset secondary rays slightly to avoid self‐hits. These uniforms ensure the shader knows the full scene and how deep reflections may go.
+
+In the third step, I wrote the intersection routine: for each sphere, compute quadratic coefficients from the ray origin, direction, and sphere center/radius, check the discriminant, pick the nearest valid hit above epsilon, and update HitInfo whenever this hit is closer than any previous one. By the end of the loop, we have the closest sphere intersection or none.
+
+In the fourth step, I implemented Blinn–Phong shading with shadows: for each light, cast a shadow ray from the hit point offset along the normal, skip light contribution if occluded, otherwise accumulate diffuse via normal · light direction and specular via the half‐vector formula. Summing over lights yields the direct illumination at the hit.
+
+In the fifth step, I set up the main ray‐tracer entry: test the primary ray against all spheres; if no hit, sample the environment map along the ray direction and return that color; if a hit, compute view direction, shade locally, extract the material’s specular coefficient as a reflection‐accumulation factor, compute the reflection direction, and prepare position/normal for recursion.
+
+In the final step, I loop up to the bounce limit (or until specular energy is negligible): for each bounce, offset the origin along the current normal, cast a reflected ray, and if it hits another sphere, shade that hit point, multiply its shading by the accumulated specular factor, add to the running color, attenuate the specular factor by the new material’s specular, and update for the next bounce. If the reflection ray misses, sample the environment map along that direction, add its contribution, and break. Finally, the accumulated color is returned with full opacity.
