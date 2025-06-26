@@ -86,6 +86,7 @@ In the fifth step, I set up the main ray‐tracer entry: test the primary ray ag
 In the final step, I loop up to the bounce limit (or until specular energy is negligible): for each bounce, offset the origin along the current normal, cast a reflected ray, and if it hits another sphere, shade that hit point, multiply its shading by the accumulated specular factor, add to the running color, attenuate the specular factor by the new material’s specular, and update for the next bounce. If the reflection ray misses, sample the environment map along that direction, add its contribution, and break. Finally, the accumulated color is returned with full opacity.
 
 ***Homework 6 solution break-down:
+
 In the first part of the simulation code, I started by initializing the forces for each particle to zero, then added gravity to all of them based on the particle mass and the gravity vector passed to the function.
 
 In the next step, I looped through all the springs to compute spring forces. For each spring I calculated the direction and length, then used Hooke’s law to compute the force based on how far the current spring length is from the rest length. I also added damping by projecting the velocity difference of the two particles along the spring direction, and then added/subtracted the total force from the connected particles.
