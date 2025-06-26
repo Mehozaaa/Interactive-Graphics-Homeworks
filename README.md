@@ -84,3 +84,15 @@ In the fourth step, I implemented Blinn–Phong shading with shadows: for each l
 In the fifth step, I set up the main ray‐tracer entry: test the primary ray against all spheres; if no hit, sample the environment map along the ray direction and return that color; if a hit, compute view direction, shade locally, extract the material’s specular coefficient as a reflection‐accumulation factor, compute the reflection direction, and prepare position/normal for recursion.
 
 In the final step, I loop up to the bounce limit (or until specular energy is negligible): for each bounce, offset the origin along the current normal, cast a reflected ray, and if it hits another sphere, shade that hit point, multiply its shading by the accumulated specular factor, add to the running color, attenuate the specular factor by the new material’s specular, and update for the next bounce. If the reflection ray misses, sample the environment map along that direction, add its contribution, and break. Finally, the accumulated color is returned with full opacity.
+
+***Homework 6 solution break-down:
+In the first part of the simulation code, I started by initializing the forces for each particle to zero, then added gravity to all of them based on the particle mass and the gravity vector passed to the function.
+
+In the next step, I looped through all the springs to compute spring forces. For each spring I calculated the direction and length, then used Hooke’s law to compute the force based on how far the current spring length is from the rest length. I also added damping by projecting the velocity difference of the two particles along the spring direction, and then added/subtracted the total force from the connected particles.
+
+After computing the total force acting on each particle, I used semi-implicit Euler integration to update both velocities and positions. I first updated velocity using acceleration (force divided by mass) and then updated position using the new velocity.
+
+Then in the last part of the function, I handled collisions with the walls of the box by checking if any particle went outside the [-1,1] range in x, y, or z direction. If it did, I clamped the position and reversed the velocity component (scaled by the restitution factor) to simulate bouncing.
+
+For displaying and shading the cloth and 3D objects, I copy/pasted the entire code from Project 4 (project4_Shading), which already includes everything needed for vertex and fragment shaders, Blinn–Phong lighting, handling textures, toggling the swapYZ option, setting up light direction and shininess, and managing GPU buffers. I reused this part as-is to handle rendering, since the focus of this project was on the simulation part.
+
